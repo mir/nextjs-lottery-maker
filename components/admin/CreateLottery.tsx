@@ -2,19 +2,17 @@ export default function CreateLottery () {
     return (
         <div className="flex">
             <a href="#" 
-                className="                                        
-                shrink-0 text-3xl font-bold 
-                bg-pink-400
-                text-white
-                rounded-full
-                items-center justify-center
-                px-3
-                pt-0.5                
-                transition-all ease-in-out duration-100
+                className="flex-none
+                w-9 h-9
+                bg-pink-400                
+                rounded-full              
+                transition-all ease-in-out duration-100                
                 hover:scale-105
-                active:scale-100               
-                ">
-                +
+                active:scale-100
+                relative                                                          
+                " >
+                <div className="bg-white rounded-full w-7 h-1 mt-4 ml-1 absolute"></div>
+                <div className="bg-white rounded-full w-1 h-7 ml-4 mt-1 absolute"></div>
             </a>
             <form>
                 <input 
