@@ -1,5 +1,3 @@
-
-
 export interface LotteryItem {
     lotteryID: number,
     state: string,
@@ -9,7 +7,7 @@ export interface LotteryItem {
     bank: number
 }
 
-export default function LotteryItem() {    
+export default function LotteryItems() {    
 
     const lotteries: Array<LotteryItem> = [{
         lotteryID: 1,
@@ -17,7 +15,7 @@ export default function LotteryItem() {
         next_state: "stop",
         players: ["0x1B75f6c15E34eEfE458FD713fD016C6d515436AA","0x1B75f6c15E34eEfE458FD713fD016C6d515436AB"],
         winner: "",
-        bank: 0.7
+        bank: 0.7,
       },
       {
           lotteryID: 2,
@@ -25,7 +23,7 @@ export default function LotteryItem() {
           next_state: "",
           players: ["0x1B75f6c15E34eEfE458FD713fD016C6d515436AA","0x1B75f6c15E34eEfE458FD713fD016C6d515436AB"],
           winner: "0x1B75f6c15E34eEfE458FD713fD016C6d515436AC",
-          bank: 0.7
+          bank: 0.8,
       }];
 
     return (        
@@ -49,7 +47,7 @@ export default function LotteryItem() {
                             {address}
                         </div>
                     )}                    
-                    <div className={` ${lottery.winner ? "text-pink-400" : "invisible"}`}>
+                    <div className={` ${lottery.winner ? "text-pink-400" : "hidden"}`}>
                         {lottery.winner} WINNER!
                     </div>
                     <div className="text-2xl text-pink-400">
