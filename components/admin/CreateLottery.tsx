@@ -1,8 +1,54 @@
-export default function CreateLottery () {
-    const minFee = 0.001;
+import { useContractFunction, useEthers } from "@usedapp/core";
+import { BigNumber, utils } from "ethers";
+import { ChangeEvent, useEffect, useState } from "react";
+import { Functions, LotteryMakerContract } from "../../contracts/LotteryMakerWrapper";
+
+interface CreateLotteryProps {
+    minFee: number
+}
+
+export default function CreateLottery ({minFee}:CreateLotteryProps) {
+
+    const { activateBrowserWallet, account } = useEthers();
+
+    const [entranceFee, setEntranceFee] = useState<number>(0);
+
+    const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+        const newEntranceFee = 
+            event.target.value === "" ? 
+                minFee : 
+                Number(event.target.value)
+        setEntranceFee(newEntranceFee)
+    }    
+
+
+    const { state, send } = useContractFunction(
+        LotteryMakerContract(),
+        Functions.CreateLottery,
+        { transactionName: Functions.CreateLottery }
+    )        
+
+    const createLottery = () => {
+        if (!entranceFee ||
+            entranceFee < minFee) {
+                console.log("Entrance fee is too low");
+                setEntranceFee(minFee);                
+            }            
+        if (!account) {
+            console.log("Waiting to login");
+            activateBrowserWallet();
+        } else {
+            console.log("Logged-in. Creating a lottery");            
+            const feeInWei = utils.parseUnits("" + entranceFee, "ether");
+            console.log(`Fee in wei: ${feeInWei}`);            
+            send(feeInWei, { value: feeInWei });
+        }        
+    }
+
     return (
         <div className="flex gap-2">
-            <a href="#" 
+            <a href="#"
+                onClick={createLottery} 
                 className="flex-none                
                 w-9 h-9
                 bg-pink-400                
@@ -18,6 +64,7 @@ export default function CreateLottery () {
             <form>                
                 <span className="text-2xl">Lottery</span>
                 <input 
+                onChange={handleInputChange}
                 type="number"
                 min={minFee}
                 step={minFee}

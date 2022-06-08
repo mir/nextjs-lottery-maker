@@ -1,27 +1,18 @@
+import { Contract, utils } from "ethers"
 import lotteryMakerABIjson from "./LotteryMakerABI.json"
-import { useWeb3Contract } from "react-moralis"
 
-const entranceFee = 1e15; //0.001 eth
-const lotteryID = 1;
+export enum Functions {
+    CreateLottery = "createLottery",
+}
 
-export async function enterLottery(
-        onError?: (error: any) => void,
-        onSuccess?: (results: any) => void,
-    ) {
-
-    console.log(`ABI: ${lotteryMakerABIjson}`);
-
-    const {runContractFunction: enterLottery} = useWeb3Contract({
-        abi: lotteryMakerABIjson,
-        contractAddress: process.env.lotteryMakerAddress,
-        functionName: "enterLottery",
-        msgValue: entranceFee,
-        params: { lotteryID: lotteryID }
-    });
-
-    
-    await enterLottery({
-        onError: onError,
-        onSuccess: onSuccess
-    });
+export function LotteryMakerContract() {
+    const lotteryInterface = new utils.Interface(lotteryMakerABIjson)
+    if (!lotteryInterface) {
+        throw "ABI is not properly read";
+    }
+    const lotteryMakerAddress = process.env.lotteryMakerAddress
+    if (!lotteryMakerAddress) {
+        throw "Lootery maker address is undefined!"
+    }
+    return new Contract(lotteryMakerAddress, lotteryInterface);  
 }

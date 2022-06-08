@@ -7,7 +7,7 @@ const Admin: NextPage = () => {
     return (
       <div className={styles.container}>
           <div className="flex flex-col p-20 gap-10">
-            <CreateLottery/>
+            <CreateLottery minFee={0.001}/>
             <LotteryItem/>
           </div>                
       </div>
