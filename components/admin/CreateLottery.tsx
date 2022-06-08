@@ -21,7 +21,6 @@ export default function CreateLottery ({minFee}:CreateLotteryProps) {
         setEntranceFee(newEntranceFee)
     }    
 
-
     const { state, send } = useContractFunction(
         LotteryMakerContract(),
         Functions.CreateLottery,
@@ -43,7 +42,7 @@ export default function CreateLottery ({minFee}:CreateLotteryProps) {
             console.log(`Fee in wei: ${feeInWei}`);            
             send(feeInWei, { value: feeInWei });
         }        
-    }
+    }    
 
     return (
         <div className="flex gap-2">

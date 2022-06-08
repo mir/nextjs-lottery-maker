@@ -1,31 +1,59 @@
-export default function LotteryItem() {
+
+
+export interface LotteryItem {
+    lotteryID: number,
+    state: string,
+    next_state: string,
+    players: Array<string>,
+    winner: string | undefined,
+    bank: number
+}
+
+export default function LotteryItem() {    
+
+    const lotteries: Array<LotteryItem> = [{
+        lotteryID: 1,
+        state: "opened",
+        next_state: "stop",
+        players: ["0x1B75f6c15E34eEfE458FD713fD016C6d515436AA","0x1B75f6c15E34eEfE458FD713fD016C6d515436AB"],
+        winner: "",
+        bank: 0.7
+      },
+      {
+          lotteryID: 2,
+          state: "money trnasferred",
+          next_state: "",
+          players: ["0x1B75f6c15E34eEfE458FD713fD016C6d515436AA","0x1B75f6c15E34eEfE458FD713fD016C6d515436AB"],
+          winner: "0x1B75f6c15E34eEfE458FD713fD016C6d515436AC",
+          bank: 0.7
+      }];
+
     return (        
         <div className="space-y-5">
-            {["001","002","003"].map((lotteryID) => 
-                <div key={lotteryID}>
+            {lotteries.map((lottery) => 
+                <div key={lottery.lotteryID}>
                 <div className="space-x-5 mb-3">                
-                    <span className="text-2xl">Lottery {lotteryID}</span>
+                    <span className="text-2xl">Lottery {lottery.lotteryID}</span>
                     <span className="text-xl text-slate-400">
-                        money trnasferred
+                        {lottery.state}
                     </span>
                     <a className="underline text-xl text-pink-400
                         hover:text-pink-500"
                         href="">
-                        stop
+                        {lottery.next_state}
                     </a>
                 </div>                
                 <div className="flex-col pl-10">
-                    {[{address:"0x1B75f6c15E34eEfE458FD713fD016C6d515436AA", style: ""},
-                      {address:"0x2B75f6c15E34eEfE458FD713fD016C6d515436AB", style: "text-pink-400"},
-                      {address:"0x3B75f6c15E34eEfE458FD713fD016C6d515436AC", style: ""}].map((player) => 
-                        <div key={player.address} 
-                            className={player.style}>
-                            {player.address}
-                            <span className={player.style? 'text-pink-400 pl-2' : 'invisible'}>winner!</span>
+                    {lottery.players.map((address) => 
+                        <div key={address}>                            
+                            {address}
                         </div>
-                    )}
+                    )}                    
+                    <div className={` ${lottery.winner ? "text-pink-400" : "invisible"}`}>
+                        {lottery.winner} WINNER!
+                    </div>
                     <div className="text-2xl text-pink-400">
-                        {0.7} eth
+                        {lottery.bank} eth
                     </div>                
                 </div>
                 </div>
