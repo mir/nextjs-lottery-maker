@@ -1,30 +1,8 @@
-export interface LotteryItem {
-    lotteryID: number,
-    state: string,
-    next_state: string,
-    players: Array<string>,
-    winner: string | undefined,
-    bank: number
-}
+import useLotteryItems, { LotteryItem } from "./useLotteryItems";
 
 export default function LotteryItems() {    
 
-    const lotteries: Array<LotteryItem> = [{
-        lotteryID: 1,
-        state: "opened",
-        next_state: "stop",
-        players: ["0x1B75f6c15E34eEfE458FD713fD016C6d515436AA","0x1B75f6c15E34eEfE458FD713fD016C6d515436AB"],
-        winner: "",
-        bank: 0.7,
-      },
-      {
-          lotteryID: 2,
-          state: "money trnasferred",
-          next_state: "",
-          players: ["0x1B75f6c15E34eEfE458FD713fD016C6d515436AA","0x1B75f6c15E34eEfE458FD713fD016C6d515436AB"],
-          winner: "0x1B75f6c15E34eEfE458FD713fD016C6d515436AC",
-          bank: 0.8,
-      }];
+    const [lotteries] = useLotteryItems();
 
     return (        
         <div className="space-y-5">
