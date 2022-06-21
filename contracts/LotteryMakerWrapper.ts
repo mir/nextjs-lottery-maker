@@ -1,4 +1,5 @@
 import { BigNumber, Contract, Signer, utils } from "ethers"
+import { Result } from "ethers/lib/utils";
 import lotteryMakerABIjson from "./LotteryMakerABI.json"
 
 export enum Functions {
@@ -47,7 +48,7 @@ function getStateString(state: number) {
     }
 }
 
-function stripLotteryID(lotteryID: string): string {    
+export function stripLotteryID(lotteryID: string): string {    
     return BigNumber.from(lotteryID) + "";
 }
 
@@ -57,7 +58,7 @@ export async function getLotteryItem(lotteryID: string, account: Signer): Promis
     const stateString = getStateString(stateNumber);    
     const nextStateString = getStateString(stateNumber + 1);
     const balanceBigNumber = await contract.connect(account).lotteryIDBalanceMapping(lotteryID) as BigNumber;
-    const balance = utils.formatUnits(balanceBigNumber) || "";
+    const balance = utils.formatUnits(balanceBigNumber) || "";    
     return {
         lotteryID: stripLotteryID(lotteryID),
         state: stateString,

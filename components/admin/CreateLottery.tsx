@@ -34,7 +34,7 @@ export default function CreateLottery ({minFee}:CreateLotteryProps) {
             const feeInWei = utils.parseUnits("" + entranceFee, "ether");
             console.log(`Fee in wei: ${feeInWei}`);
             const contract = LotteryMakerContract();
-            contract.connect(account).createLottery(entranceFee, {value: feeInWei});            
+            contract.connect(account).createLottery(feeInWei, {value: feeInWei});            
         }        
     }    
 

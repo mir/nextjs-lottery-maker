@@ -1,6 +1,6 @@
 import { utils } from "ethers";
 import { useEffect, useState } from "react";
-import { LotteryMakerContract } from "../../../contracts/LotteryMakerWrapper";
+import { LotteryMakerContract, stripLotteryID } from "../../../contracts/LotteryMakerWrapper";
 import useWallet from "./useWallet";
 
 const useLotteryIDs = (): Array<string> => {
@@ -66,10 +66,10 @@ const useLotteryIDs = (): Array<string> => {
             }
           });
           if (!theSame) {
-            console.log(`New lottery IDs: ${newLotteryIds}`);
+            console.log(`New lottery IDs: ${newLotteryIds.map(stripLotteryID)}`);
             setLotteryIDs(newLotteryIds);
           } else {
-            console.log(`Old lottery IDs: ${newLotteryIds}`);
+            console.log(`Old lottery IDs: ${newLotteryIds.map(stripLotteryID)}`);
           }         
         });
     }, [account, blockNumber]);
