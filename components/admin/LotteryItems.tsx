@@ -1,8 +1,8 @@
-import useLotteryItems, { LotteryItem } from "./useLotteryItems";
+import useLotteryItems, { LotteryItem } from "./hooks/useLotteryItems";
 
 export default function LotteryItems() {    
 
-    const [lotteries] = useLotteryItems();
+    const lotteries = useLotteryItems();
 
     return (        
         <div className="space-y-5">

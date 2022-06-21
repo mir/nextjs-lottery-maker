@@ -1,10 +1,14 @@
-import { useEthers } from "@usedapp/core"
+import { Signer } from 'ethers';
 import Image from 'next/image'
+import { useContext } from 'react';
 import metamask_img from '../../public/metamask.png'
 
-export default function ConnectWallet() {
+interface WalletButtonProps {
+    connectFunction(): void,
+}
 
-    const { activateBrowserWallet, account } = useEthers()
+
+export default function ConnectWallet({connectFunction}: WalletButtonProps) {    
     
     return (
     <div>        
@@ -17,7 +21,7 @@ export default function ConnectWallet() {
             active:scale-100
             transition-all ease-in-out duration-100
             "
-            onClick={() => activateBrowserWallet()}>
+            onClick={connectFunction}>
                 <span className="text-2xl text-white mx-2">
                 Connect Metamask
                 </span> 

@@ -1,15 +1,15 @@
-import { useContractFunction, useEthers } from "@usedapp/core";
-import { BigNumber, utils } from "ethers";
-import { ChangeEvent, useEffect, useState } from "react";
+import { BigNumber, Signer, utils } from "ethers";
+import { ChangeEvent, useContext, useEffect, useState } from "react";
 import { Functions, LotteryMakerContract } from "../../contracts/LotteryMakerWrapper";
+import AccountContext from "../../pages/AccountContext";
 
 interface CreateLotteryProps {
     minFee: number
 }
 
 export default function CreateLottery ({minFee}:CreateLotteryProps) {
-
-    const { activateBrowserWallet, account } = useEthers();
+    
+    const {account, provider} = useContext(AccountContext);    
 
     const [entranceFee, setEntranceFee] = useState<number>(0);
 
@@ -21,12 +21,6 @@ export default function CreateLottery ({minFee}:CreateLotteryProps) {
         setEntranceFee(newEntranceFee)
     }    
 
-    const { state, send } = useContractFunction(
-        LotteryMakerContract(),
-        Functions.CreateLottery,
-        { transactionName: Functions.CreateLottery }
-    )        
-
     const createLottery = () => {
         if (!entranceFee ||
             entranceFee < minFee) {
@@ -34,13 +28,13 @@ export default function CreateLottery ({minFee}:CreateLotteryProps) {
                 setEntranceFee(minFee);                
             }            
         if (!account) {
-            console.log("Waiting to login");
-            activateBrowserWallet();
+            console.log("Waiting to login");            
         } else {
             console.log("Logged-in. Creating a lottery");            
             const feeInWei = utils.parseUnits("" + entranceFee, "ether");
-            console.log(`Fee in wei: ${feeInWei}`);            
-            send(feeInWei, { value: feeInWei });
+            console.log(`Fee in wei: ${feeInWei}`);
+            const contract = LotteryMakerContract();
+            contract.connect(account).createLottery(entranceFee, {value: feeInWei});            
         }        
     }    
 
