@@ -7,17 +7,19 @@ const useWallet = () => {
     // what MetaMask injects as window.ethereum into each page
 
     const[ signer, setSigner ] = useState<Signer | undefined>(undefined);
-    const[ provider, setProvider ] = useState<Web3Provider | undefined>(undefined);
+    const[ provider, setProvider ] = useState<Web3Provider | undefined>(undefined);    
 
     const checkAndSetProvider = () => {
-        if (!window.ethereum) {
+        const ethWindow = window as Window & typeof globalThis & {readonly ethereum: any};
+        
+        if (!ethWindow.ethereum) {
             console.log(`install metamask`);
             return
         }
         
         if (!provider) {
             console.log(`Setting provider`);
-            setProvider(new ethers.providers.Web3Provider(window.ethereum));
+            setProvider(new ethers.providers.Web3Provider(ethWindow.ethereum));
         } else {
             console.log(`Provider exists. Checked.`);
             if (!signer) {

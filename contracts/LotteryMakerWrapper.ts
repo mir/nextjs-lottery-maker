@@ -1,4 +1,4 @@
-import { Contract, utils } from "ethers"
+import { BigNumber, Contract, Signer, utils } from "ethers"
 import lotteryMakerABIjson from "./LotteryMakerABI.json"
 
 export enum Functions {
@@ -23,10 +23,47 @@ export function LotteryMakerContract() {
     return new Contract(lotteryMakerAddress, lotteryInterface);  
 }
 
-export function lotteryItemParams(lotteryID: string) {
-    return [{
-        contract: LotteryMakerContract(),
-        method: Functions.Balance,
-        args: [lotteryID],
-      }]
+export interface LotteryItem {
+    lotteryID: string,
+    state: string,
+    next_state:  string,
+    players: Array<string>,
+    winner: string,
+    bank: string,
+}
+
+function getStateString(state: number) {
+    switch (state) {
+        case 0:
+            return "Opened"
+        case 1:
+            return "Stopped"
+        case 2:
+            return "Calculating"
+        case 3:
+            return "MoneyTransfered"
+        default:
+            return ""
+    }
+}
+
+function stripLotteryID(lotteryID: string): string {    
+    return BigNumber.from(lotteryID) + "";
+}
+
+export async function getLotteryItem(lotteryID: string, account: Signer): Promise<LotteryItem> {
+    const contract = LotteryMakerContract();    
+    const stateNumber = await contract.connect(account).lotteryIDStateMapping(lotteryID) as number;
+    const stateString = getStateString(stateNumber);    
+    const nextStateString = getStateString(stateNumber + 1);
+    const balanceBigNumber = await contract.connect(account).lotteryIDBalanceMapping(lotteryID) as BigNumber;
+    const balance = utils.formatUnits(balanceBigNumber) || "";
+    return {
+        lotteryID: stripLotteryID(lotteryID),
+        state: stateString,
+        next_state: nextStateString,
+        players: ["0x1B75f6c15E34eEfE458FD713fD016C6d515436AA","0x1B75f6c15E34eEfE458FD713fD016C6d515436AB"],
+        winner: "",
+        bank: balance,
+      }
 }

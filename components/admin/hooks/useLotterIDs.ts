@@ -5,7 +5,8 @@ import useWallet from "./useWallet";
 
 const useLotteryIDs = (): Array<string> => {
     
-    const { account, provider } = useWallet();    
+    const { account, provider } = useWallet();       
+
     const [lotteryIDs, setLotteryIDs] = useState<string[]>([]);
     const [blockNumber, setBlockNumber] = useState<number>(0);
     const [timer, setTimer] = useState<number>(0);

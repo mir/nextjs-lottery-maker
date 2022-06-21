@@ -1,37 +1,23 @@
+import { useState } from "react";
+import { getLotteryItem, LotteryItem } from "../../../contracts/LotteryMakerWrapper";
 import useLotteryIDs from "./useLotterIDs";
-
-export interface LotteryItem {
-    lotteryID: number,
-    state: string,
-    next_state: string,
-    players: Array<string>,
-    winner: string | undefined,
-    bank: number
-}
-
-const LOTTERIES: Array<LotteryItem> = [{
-  lotteryID: 1,
-  state: "opened",
-  next_state: "stop",
-  players: ["0x1B75f6c15E34eEfE458FD713fD016C6d515436AA","0x1B75f6c15E34eEfE458FD713fD016C6d515436AB"],
-  winner: "",
-  bank: 0.7,
-},
-{
-    lotteryID: 2,
-    state: "money transferred",
-    next_state: "",
-    players: ["0x1B75f6c15E34eEfE458FD713fD016C6d515436AA","0x1B75f6c15E34eEfE458FD713fD016C6d515436AB"],
-    winner: "0x1B75f6c15E34eEfE458FD713fD016C6d515436AC",
-    bank: 0.8,
-}];
+import useWallet from "./useWallet";
 
 const useLotteryItems = (): Array<LotteryItem> => {     
     const lotteryIDs = useLotteryIDs();
+    const {account} = useWallet();
+    const [lotteries, setLotteries] = useState<Map<string, LotteryItem>>(new Map); 
     
-    const lotteries: Array<LotteryItem> = [];
+    if (!account) return [];
 
-    return LOTTERIES;
+    lotteryIDs.forEach((lotteryID) => {
+      getLotteryItem(lotteryID, account).then((lotteryItem) => {
+        lotteries.set(lotteryID, lotteryItem);
+        setLotteries(lotteries);
+      });
+    });
+
+    return Array.from(lotteries.values());
 }
 
 export default useLotteryItems;

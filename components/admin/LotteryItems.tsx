@@ -1,4 +1,4 @@
-import useLotteryItems, { LotteryItem } from "./hooks/useLotteryItems";
+import useLotteryItems from "./hooks/useLotteryItems";
 
 export default function LotteryItems() {    
 
