@@ -2,7 +2,6 @@ import { utils } from "ethers";
 import { useState } from "react";
 import { stripLotteryID } from "../../../contracts/LotteryMakerWrapper";
 import useLogs from "./useLogs";
-import useWallet from "./useWallet";
 import { Log } from "@ethersproject/abstract-provider";
 
 type WinEvent = {winner: string, lotteryID: string};
@@ -36,9 +35,15 @@ function parseWinLogs(logs: Log[]) {
     });
 }
 
-const useWinners = (lotteryIDs: Array<string>): Array<WinEvent> => {    
-    const { account, provider } = useWallet();        
+function winnersFor(winEvents: Array<WinEvent>): Map<string, string> {
+  const winMap = new Map<string, string>();
+  winEvents.forEach((winEvent) => {
+    winMap.set(winEvent.lotteryID, winEvent.winner);    
+  });
+  return winMap;
+}
 
+const useWinners = (lotteryIDs: Array<string>): Map<string, string> => {    
     const filter = {
       topics: [
         utils.id("WinnerCalculatedEvent(address,uint256)"),
@@ -60,10 +65,10 @@ const useWinners = (lotteryIDs: Array<string>): Array<WinEvent> => {
         console.log(`Old winners: ${winEvents}`);
       }
     }  else {
-      console.log(`Empty logs`);
+      console.log(`Empty winner logs`);
     }
           
-    return winEvents;
+    return winnersFor(winEvents);
 }
 
 export default useWinners;
