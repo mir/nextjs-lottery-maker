@@ -62,6 +62,7 @@ export default function CreateLottery ({minFee}:CreateLotteryProps) {
                 min={minFee}
                 step={minFee}
                 max="1"
+                defaultValue={minFee}
                 className="w-20 border-b-2 m-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
                 id="username"
                 placeholder={`${minFee}`}/>

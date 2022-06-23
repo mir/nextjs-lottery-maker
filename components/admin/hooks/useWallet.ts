@@ -7,6 +7,7 @@ const useWallet = () => {
     // what MetaMask injects as window.ethereum into each page
 
     const[ signer, setSigner ] = useState<Signer | undefined>(undefined);
+    const[ address, setAddress ] = useState<string>("0x0");
     const[ provider, setProvider ] = useState<Web3Provider | undefined>(undefined);    
 
     const checkAndSetProvider = () => {
@@ -25,6 +26,10 @@ const useWallet = () => {
             if (!signer) {
                 console.log(`Setting account`);
                 setSigner(provider.getSigner());
+                provider.getSigner().getAddress().then((address) => {
+                    console.log(`Address is ready: ${address}`);
+                    setAddress(address);
+                });
             } else {
                 console.log(`Account exists, checked.`);
             }
@@ -40,9 +45,10 @@ const useWallet = () => {
         .then((accounts)=>{
           if(accounts.length>0) {
               console.log(`Setting account: ${accounts[0]}`);
+              setAddress(accounts[0]);
               setSigner(provider.getSigner());
               provider.getSigner().getAddress().then((address) => {
-                console.log(`Singer provider.getSinger() address = ${address}`);
+                console.log(`Singer provider.getSinger() address = ${address}`);                
               });              
           }
         })
@@ -52,7 +58,7 @@ const useWallet = () => {
     // The MetaMask plugin also allows signing transactions to
     // send ether and pay to change state within the blockchain.
     // For this, you need the account signer...    
-    return { account: signer, provider: provider, connectFunction: connectWallet };
+    return { account: signer, address: address, provider: provider, connectFunction: connectWallet };
 }
 
 export default useWallet;

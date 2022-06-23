@@ -3,8 +3,17 @@ import { useState } from "react";
 import { stripLotteryID } from "../../../contracts/LotteryMakerWrapper";
 import useLogs from "./useLogs";
 import { Log } from "@ethersproject/abstract-provider";
+import { hexStripZeros } from "ethers/lib/utils";
 
 type WinEvent = {winner: string, lotteryID: string};
+
+function winEventsToString(winEvents: Array<WinEvent> | undefined): string {
+  if (!winEvents) return "empty";
+
+  return winEvents.reduce((prev, cur) => {
+    return `{winner: ${cur.winner}, lotteryID: ${cur.lotteryID}}` + prev
+  }, "");
+}
 
 function equalWinEvents(events1: Array<WinEvent>,events2: Array<WinEvent>) {
   if (events1.length === events2.length) {
@@ -29,7 +38,7 @@ function parseWinLogs(logs: Log[]) {
     .filter((topics) => topics.winner && topics.lotteryID)
     .map<WinEvent>((winEvent) => {
       return {
-        winner: winEvent.winner,
+        winner: hexStripZeros(winEvent.winner),
         lotteryID: stripLotteryID(winEvent.lotteryID)
       };
     });
@@ -58,11 +67,11 @@ const useWinners = (lotteryIDs: Array<string>): Map<string, string> => {
     
     if (logs.length > 0) {
       const newWinEvents = parseWinLogs(logs);
-      if (equalWinEvents(winEvents, newWinEvents)) {
-        console.log(`New winners: ${winEvents}`);
+      if (!equalWinEvents(winEvents, newWinEvents)) {
+        console.log(`New winners: ${winEventsToString(winEvents)}`);
         setWinEvents(newWinEvents);
       } else {
-        console.log(`Old winners: ${winEvents}`);
+        console.log(`Old winners: ${winEventsToString(winEvents)}`);
       }
     }  else {
       console.log(`Empty winner logs`);

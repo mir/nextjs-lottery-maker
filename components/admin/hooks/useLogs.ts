@@ -4,7 +4,7 @@ import useWallet from "./useWallet";
 import { Log } from "@ethersproject/abstract-provider";
 
 const useLogs = (filter: {topics: (string | null) [], fromBlock: number }) => {
-    const { account, provider } = useWallet();       
+    const { address, provider } = useWallet();       
 
     const [logs, setLogs] = useState<Log[]>([]);
     const [blockNumber, setBlockNumber] = useState<number>(0);
@@ -18,29 +18,12 @@ const useLogs = (filter: {topics: (string | null) [], fromBlock: number }) => {
         return false;
       }    
   
-      if (!provider || !account) {
+      if (!provider || !address) {
         console.log("Not logged in"); 
         return false;
       }
       return true;
     }
-
-    useEffect(() => {
-      if (!accountCheck) return;
-
-      setTimeout(() => {
-        console.log(`Timer run`);
-        provider?.getBlockNumber().then((number) => {
-          if (number !== blockNumber) {
-            console.log(`New block mined ${number}`);
-            setBlockNumber(number);
-          } else {
-            console.log(`Still an old block: ${number}`);
-          }
-        });
-        setTimer(timer + 1);
-      }, 10000);      
-    }, [account,timer]);
 
     useEffect(() => {     
       if (!accountCheck) return;
@@ -58,7 +41,26 @@ const useLogs = (filter: {topics: (string | null) [], fromBlock: number }) => {
           }          
           setLogs(logsResult);         
         });
-    }, [account, blockNumber]);
+    }, [blockNumber]);
+
+    useEffect(() => {
+      if (!accountCheck) return;
+
+      provider?.getBlockNumber().then((number) => {
+        if (number !== blockNumber) {
+          console.log(`New block mined ${number}`);
+          setBlockNumber(number);
+        } else {
+          console.log(`Still an old block: ${number}`);
+        }
+      });
+
+      setTimeout(() => {
+        console.log(`Timer run`);        
+        setTimer(timer + 1);
+      }, 10000);      
+    }, [address,timer]);
+    
     return logs.filter((log) => log !== undefined && log !== null);  
 }
 

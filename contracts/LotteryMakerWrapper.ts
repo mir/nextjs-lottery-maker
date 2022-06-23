@@ -64,8 +64,8 @@ export async function getLotteryItem(lotteryID: string, account: Signer): Promis
         lotteryID: stripLotteryID(lotteryID),
         state: stateString,
         next_state: nextStateString,
-        players: ["0x1B75f6c15E34eEfE458FD713fD016C6d515436AA","0x1B75f6c15E34eEfE458FD713fD016C6d515436AB"],
-        winner: "",
+        players: ["0x1MOCKADDRESS4eEfE458FD713fD016C6d515436A","0x2MOCKADDRESS4eEfE458FD713fD016C6d515436A"],
+        winner: "0x1MOCKADDRESS4eEfE458FD713fD016C6d515436C",
         bank: balance,
       }
 }
