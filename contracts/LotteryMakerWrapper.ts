@@ -12,16 +12,17 @@ export enum Functions {
     WinnerCalculatedEvent = "WinnerCalculatedEvent(address,uint256)",
 }
 
+export const address = process.env.lotteryMakerAddress;
+
 export function LotteryMakerContract() {
     const lotteryInterface = new utils.Interface(lotteryMakerABIjson)
     if (!lotteryInterface) {
         throw "ABI is not properly read";
-    }
-    const lotteryMakerAddress = process.env.lotteryMakerAddress
-    if (!lotteryMakerAddress) {
+    }    
+    if (!address) {
         throw "Lootery maker address is undefined!"
     }
-    return new Contract(lotteryMakerAddress, lotteryInterface);  
+    return new Contract(address, lotteryInterface);  
 }
 
 export interface LotteryItem {
