@@ -35,7 +35,7 @@ const useLotteryIDs = (): Array<string> => {
       }
     }  else {
       console.log(`Empty logs`);
-    }      
+    }
     return lotteryIDs;
 }
 
