@@ -26,7 +26,11 @@ const useLotteryItems = (): Array<LotteryItem> => {
       });
     });
 
-    return Array.from(lotteries.values());
+    return Array.from(lotteries.values()).sort((a,b) => {
+      if (a.lotteryID < b.lotteryID) return -1
+      else if (a.lotteryID === b.lotteryID) return 0 
+      else return 1;
+    });
 }
 
 export default useLotteryItems;

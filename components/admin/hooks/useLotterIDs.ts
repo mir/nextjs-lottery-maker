@@ -10,7 +10,8 @@ function parseLogs(logs: Log[]) {
   return logs
         .map((log) => log.topics[2])
         .filter((topic) => topic)
-        .map(stripLotteryID);
+        .map(stripLotteryID)
+        .sort();
 }
 
 function equalLotteryIDs(newArray: string[], oldArray:string[]): boolean {
