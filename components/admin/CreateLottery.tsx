@@ -1,5 +1,5 @@
 import { BigNumber, Signer, utils } from "ethers";
-import { ChangeEvent, useContext, useEffect, useState } from "react";
+import { ChangeEvent, useContext, useEffect, useRef, useState } from "react";
 import { Functions, LotteryMakerContract } from "../../contracts/LotteryMakerWrapper";
 import AccountContext from "../../pages/AccountContext";
 
@@ -9,9 +9,11 @@ interface CreateLotteryProps {
 
 export default function CreateLottery ({minFee}:CreateLotteryProps) {
     
-    const {account, provider} = useContext(AccountContext);    
+    const {account} = useContext(AccountContext);    
 
     const [entranceFee, setEntranceFee] = useState<number>(0);
+
+    const entranceFeeRef = useRef<HTMLInputElement>(null);
 
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         const newEntranceFee = 
@@ -31,10 +33,14 @@ export default function CreateLottery ({minFee}:CreateLotteryProps) {
             console.log("Waiting to login");            
         } else {
             console.log("Logged-in. Creating a lottery");            
-            const feeInWei = utils.parseUnits("" + entranceFee, "ether");
+            const feeInWei = utils.parseUnits("" + entranceFeeRef.current?.value, "ether");
             console.log(`Fee in wei: ${feeInWei}`);
             const contract = LotteryMakerContract();
-            contract.connect(account).createLottery(feeInWei, {value: feeInWei});            
+            try {
+                contract.connect(account).createLottery(feeInWei, {value: feeInWei});            
+            } catch (e) {
+                console.log(e);
+            }
         }        
     }    
 
@@ -58,6 +64,7 @@ export default function CreateLottery ({minFee}:CreateLotteryProps) {
                 <span className="text-2xl">Lottery</span>
                 <input 
                 onChange={handleInputChange}
+                ref={entranceFeeRef}
                 type="number"
                 min={minFee}
                 step={minFee}

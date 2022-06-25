@@ -3,14 +3,27 @@ import { LotteryMakerContract } from "../../../contracts/LotteryMakerWrapper";
 import useWallet from "./useWallet";
 import { Log } from "@ethersproject/abstract-provider";
 
-const useLogs = (filter: {topics: (string | null) [], fromBlock: number }) => {
-    const { address, provider } = useWallet();       
+function equalLogs(oldLogs: Log[], newLogs: Log[]) {
+  if (oldLogs.length === newLogs.length) {    
+    oldLogs.forEach((item, index) => {
+      if (item !== newLogs[index]) {
+        return false;                
+      }
+    });
+    return true;
+  } else {
+    return false;
+  }
+}
 
+const useLogs = (filter: { address?: string, topics: (string | null) [], fromBlock: number }) => {
+    const { address, provider } = useWallet();       
+    
     const [logs, setLogs] = useState<Log[]>([]);
     const [blockNumber, setBlockNumber] = useState<number>(0);
     const [timer, setTimer] = useState<number>(0);
     
-    const contract = LotteryMakerContract();
+    const contract = LotteryMakerContract();        
 
     const accountCheck = () => {
       if (!contract) {
@@ -27,19 +40,16 @@ const useLogs = (filter: {topics: (string | null) [], fromBlock: number }) => {
 
     useEffect(() => {     
       if (!accountCheck) return;
-       
+      
+      if (!filter.address) {      
+        filter.address = contract.address;
+      }
+
       provider?.getLogs(filter)
-        .then((logsResult) => {
-          if (logsResult.length === logs.length) {
-            let theSame = true;
-            logsResult.forEach((item, index) => {
-              if (item !== logs[index]) {
-                theSame = false;                
-              }
-            });
-            if (theSame) return;
+        .then((newLogs) => {
+          if (!equalLogs(newLogs, logs)) {
+            setLogs(newLogs);
           }          
-          setLogs(logsResult);         
         });
     }, [blockNumber]);
 
