@@ -67,11 +67,8 @@ const useWinners = (lotteryIDs: Array<string>): Map<string, string> => {
     
     if (logs.length > 0) {
       const newWinEvents = parseWinLogs(logs);
-      if (!equalWinEvents(winEvents, newWinEvents)) {
-        console.log(`New winners: ${winEventsToString(winEvents)}`);
+      if (!equalWinEvents(winEvents, newWinEvents)) {        
         setWinEvents(newWinEvents);
-      } else {
-        console.log(`Old winners: ${winEventsToString(winEvents)}`);
       }
     }  else {
       console.log(`Empty winner logs`);

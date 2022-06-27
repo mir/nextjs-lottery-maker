@@ -1,27 +1,37 @@
 import useLotteryItems from "./hooks/useLotteryItems";
+import useLotteryState from "./hooks/useLotteryState";
 
 export default function LotteryItems() {    
 
     const lotteries = useLotteryItems();
+    const {nextStateClicked} = useLotteryState();
 
     return (        
         <div className="space-y-5">
             {lotteries.map((lottery) => 
                 <div key={lottery.lotteryID}>
                 <div className="space-x-5 mb-3">                
-                    <span className="text-2xl">Lottery {lottery.lotteryID}</span>
-                    <span className="text-xl text-slate-400">
-                        {lottery.state}
-                    </span>
-                    <a className="underline text-xl text-pink-400
-                        hover:text-pink-500"
-                        href="">
-                        {lottery.next_state}
-                    </a>
+                    <span className="text-2xl">Lottery {lottery.lotteryID}</span>                    
+                    {lottery.state === "Calculating" ?
+                        (<span className="text-xl text-slate-400">
+                            {lottery.next_state}
+                        </span>):
+                        (<>
+                            <span className="text-xl text-slate-400">
+                                {lottery.state}
+                            </span>
+                            <a className="underline text-xl text-pink-400
+                            hover:text-pink-500"
+                            href="#"                                                
+                            onClick={(e) => {nextStateClicked(lottery.lotteryID,lottery.state)}}>
+                            {lottery.next_state}
+                            </a>
+                        </>)    
+                    }
                 </div>                
                 <div className="flex-col pl-10">
-                    {lottery.players.map((address) => 
-                        <div key={address}>                            
+                    {lottery.players.map((address, index) => 
+                        <div key={address + ":" + index + ":" + "lotteryID"}>                            
                             {address}
                         </div>
                     )}                    

@@ -209,6 +209,25 @@
         "inputs": [
             {
                 "internalType": "uint256",
+                "name": "lotteryID",
+                "type": "uint256"
+            }
+        ],
+        "name": "getAllEntrances",
+        "outputs": [
+            {
+                "internalType": "address payable[]",
+                "name": "",
+                "type": "address[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
                 "name": "",
                 "type": "uint256"
             }

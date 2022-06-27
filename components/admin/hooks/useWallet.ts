@@ -30,8 +30,6 @@ const useWallet = () => {
                     console.log(`Address is ready: ${address}`);
                     setAddress(address);
                 });
-            } else {
-                console.log(`Account exists, checked.`);
             }
         }
     }

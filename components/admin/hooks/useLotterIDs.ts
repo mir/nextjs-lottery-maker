@@ -27,8 +27,7 @@ const useLotteryIDs = (): Array<string> => {
 
   const { address } = useWallet();  
   
-  const onwerAddress = hexZeroPad(address, 32);
-  console.log(`onwerAddress: ${onwerAddress}`);
+  const onwerAddress = hexZeroPad(address, 32);  
     const [lotteryIDs, setLotteryIDs] = useState<Array<string>>([]);
     const filter = {
       topics: [
@@ -42,11 +41,8 @@ const useLotteryIDs = (): Array<string> => {
     const logs = useLogs(filter);
     if (logs.length > 0) {
       const newLotteryIds = parseLogs(logs);            
-      if (!equalLotteryIDs(newLotteryIds, lotteryIDs)) {
-        console.log(`New lottery IDs: ${newLotteryIds}`);
+      if (!equalLotteryIDs(newLotteryIds, lotteryIDs)) {        
         setLotteryIDs(newLotteryIds);
-      } else {
-        console.log(`Old lottery IDs: ${newLotteryIds}`);
       }
     }  else {
       console.log(`Empty logs`);
