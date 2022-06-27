@@ -83,7 +83,7 @@ export async function getPlayers(lotteryID: string, account: Signer) {
     if (players.length > 0) {
         return players
     } else {
-        return ["0x1MOCKADDRESS4eEfE458FD713fD016C6d515436A","0x2MOCKADDRESS4eEfE458FD713fD016C6d515436A"]
+        return ["No players"]
     }
 }
 
