@@ -1,6 +1,6 @@
 import { BigNumber, Contract, Signer, utils } from "ethers"
-import { Result } from "ethers/lib/utils";
 import lotteryMakerABIjson from "./LotteryMakerABI.json"
+import { TransactionResponse } from "@ethersproject/abstract-provider";
 
 export enum Functions {
     CreateLottery = "createLottery",
@@ -70,7 +70,14 @@ export async function goNextState(lotteryID: string, state: string, account: Sig
 
 }
 
-async function getPlayers(lotteryID: string, account: Signer) {
+export async function enterTheLottery(lotteryID: string, account: Signer) {
+    const contract = LotteryMakerContract();
+    const fee = await contract.connect(account).lotteryIDFeeMapping(lotteryID);
+    console.log(`fee = ${fee}`);
+    await contract.connect(account).enterLottery(lotteryID, { value: fee });
+}
+
+export async function getPlayers(lotteryID: string, account: Signer) {
     const contract = LotteryMakerContract();    
     const players = await contract.connect(account).getAllEntrances(lotteryID) as string[];    
     if (players.length > 0) {

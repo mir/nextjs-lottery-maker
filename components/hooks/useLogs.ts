@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { LotteryMakerContract } from "../../../contracts/LotteryMakerWrapper";
+import { LotteryMakerContract } from "../../contracts/LotteryMakerWrapper";
 import useWallet from "./useWallet";
 import { Log } from "@ethersproject/abstract-provider";
 

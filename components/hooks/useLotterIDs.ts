@@ -1,7 +1,7 @@
 import { utils } from "ethers";
 import { hexZeroPad } from "ethers/lib/utils";
 import { useState } from "react";
-import { stripLotteryID } from "../../../contracts/LotteryMakerWrapper";
+import { stripLotteryID } from "../../contracts/LotteryMakerWrapper";
 import useLogs from "./useLogs";
 import useWallet from "./useWallet";
 import { Log } from "@ethersproject/abstract-provider";
@@ -23,16 +23,16 @@ function equalLotteryIDs(newArray: string[], oldArray:string[]): boolean {
   return true;
 }
 
-const useLotteryIDs = (): Array<string> => {    
-
-  const { address } = useWallet();  
-  
-  const onwerAddress = hexZeroPad(address, 32);  
+const useLotteryIDs = (onwerAddress?: string): Array<string> => {    
+  let filterAddress = null;
+  if (onwerAddress) {
+    filterAddress = hexZeroPad(onwerAddress, 32);  
+  }
     const [lotteryIDs, setLotteryIDs] = useState<Array<string>>([]);
     const filter = {
       topics: [
         utils.id("LotteryCreatedEvent(address,uint256)"),
-        onwerAddress,
+        filterAddress,
         null
       ],
       fromBlock: 0,

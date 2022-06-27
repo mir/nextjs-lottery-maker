@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { getLotteryItem, LotteryItem, stripLotteryID } from "../../../contracts/LotteryMakerWrapper";
+import { getLotteryItem, LotteryItem, stripLotteryID } from "../../contracts/LotteryMakerWrapper";
 import useLotteryIDs from "./useLotterIDs";
 import useWallet from "./useWallet";
 import useWinners from "./useWinners";
@@ -11,8 +11,9 @@ function setWinner(lotteryItem: LotteryItem, winnersMap: Map<string, string>) {
 }
 
 const useLotteryItems = (): Array<LotteryItem> => {     
-    const lotteryIDs = useLotteryIDs();
-    const {account} = useWallet();
+    
+    const {address, account} = useWallet();
+    const lotteryIDs = useLotteryIDs(address);
     const [lotteries, setLotteries] = useState<Map<string, LotteryItem>>(new Map);
     const winnersMap = useWinners(lotteryIDs);
     

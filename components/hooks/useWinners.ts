@@ -1,6 +1,6 @@
 import { utils } from "ethers";
 import { useState } from "react";
-import { stripLotteryID } from "../../../contracts/LotteryMakerWrapper";
+import { stripLotteryID } from "../../contracts/LotteryMakerWrapper";
 import useLogs from "./useLogs";
 import { Log } from "@ethersproject/abstract-provider";
 import { hexStripZeros } from "ethers/lib/utils";

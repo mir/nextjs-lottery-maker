@@ -2,7 +2,7 @@ import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import ConnectWallet from '../components/admin/ConnectWallet'
 import { createContext } from 'react'
-import useWallet from '../components/admin/hooks/useWallet';
+import useWallet from '../components/hooks/useWallet';
 import AccountContext from './AccountContext';
 import styles from '../styles/Home.module.css'
 
