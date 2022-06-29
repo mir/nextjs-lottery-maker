@@ -28,7 +28,10 @@ export default function LotteryItems() {
                             <a className="underline text-xl text-pink-400
                             hover:text-pink-500"
                             href="#"                                                
-                            onClick={(e) => {nextStateClicked(lottery.lotteryID,lottery.state)}}>
+                            onClick={(e) => {
+                                e.preventDefault();
+                                nextStateClicked(lottery.lotteryID,lottery.state)}
+                                }>
                             {lottery.next_state}
                             </a>
                         </>)    

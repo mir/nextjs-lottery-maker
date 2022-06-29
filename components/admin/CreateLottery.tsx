@@ -47,7 +47,10 @@ export default function CreateLottery ({minFee}:CreateLotteryProps) {
     return (
         <div className="flex gap-2">
             <a href="#"
-                onClick={createLottery} 
+                onClick={(e) => {
+                    e.preventDefault();
+                    createLottery();
+                }} 
                 className="flex-none                
                 w-9 h-9
                 bg-pink-400                
