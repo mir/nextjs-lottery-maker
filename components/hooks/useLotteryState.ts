@@ -3,7 +3,7 @@ import { enterTheLottery, getPlayers, goNextState } from "../../contracts/Lotter
 import useWallet from "./useWallet";
 
 const useLotteryState = () => {
-    const { account, address } = useWallet();    
+    const { account } = useWallet();    
 
     const nextStateClicked = (lotteryID: string, currentState: string) => {  
         console.log(`State button clicked for Lottery ${lotteryID} and currnt state ${currentState}`);

@@ -7,14 +7,6 @@ import { hexStripZeros } from "ethers/lib/utils";
 
 type WinEvent = {winner: string, lotteryID: string};
 
-function winEventsToString(winEvents: Array<WinEvent> | undefined): string {
-  if (!winEvents) return "empty";
-
-  return winEvents.reduce((prev, cur) => {
-    return `{winner: ${cur.winner}, lotteryID: ${cur.lotteryID}}` + prev
-  }, "");
-}
-
 function equalWinEvents(events1: Array<WinEvent>,events2: Array<WinEvent>) {
   if (events1.length === events2.length) {
     let theSame = true;

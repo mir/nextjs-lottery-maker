@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { LotteryMakerContract } from "../../contracts/LotteryMakerWrapper";
 import useWallet from "./useWallet";
 import { Log } from "@ethersproject/abstract-provider";
+import useContract from "./useContract";
 
 function equalLogs(oldLogs: Log[], newLogs: Log[]) {
   if (oldLogs.length === newLogs.length) {    
@@ -23,7 +23,7 @@ const useLogs = (filter: { address?: string, topics: (string | null) [], fromBlo
     const [blockNumber, setBlockNumber] = useState<number>(0);
     const [timer, setTimer] = useState<number>(0);
     
-    const contract = LotteryMakerContract();        
+    const contract = useContract();        
 
     const accountCheck = () => {
       if (!contract) {

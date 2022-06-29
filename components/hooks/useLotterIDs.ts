@@ -3,7 +3,6 @@ import { hexZeroPad } from "ethers/lib/utils";
 import { useState } from "react";
 import { stripLotteryID } from "../../contracts/LotteryMakerWrapper";
 import useLogs from "./useLogs";
-import useWallet from "./useWallet";
 import { Log } from "@ethersproject/abstract-provider";
 
 function parseLogs(logs: Log[]) {
