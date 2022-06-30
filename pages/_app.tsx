@@ -8,13 +8,13 @@ import styles from '../styles/Home.module.css'
 
 function MyApp({ Component, pageProps }: AppProps) {
   
-  const { account, provider, connectFunction } = useWallet();  
+  const { account, provider, connectFunction, address } = useWallet();  
   
   return (    
     <div className={styles.container}>
       <AccountContext.Provider value={{account: account, provider: provider}}>
         <div className="p-20">
-          { account ?            
+          { address ?            
             <Component {...pageProps} />                  
             :
             <ConnectWallet connectFunction={connectFunction}/>

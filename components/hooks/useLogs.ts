@@ -50,6 +50,8 @@ const useLogs = (filter: { address?: string, topics: (string | null) [], fromBlo
           if (!equalLogs(newLogs, logs)) {
             setLogs(newLogs);
           }          
+        }).catch(e => {
+          console.log(e);
         });
     }, [blockNumber]);
 
@@ -63,6 +65,8 @@ const useLogs = (filter: { address?: string, topics: (string | null) [], fromBlo
         } else {
           console.log(`Still an old block: ${number}`);
         }
+      }).catch(e => {
+        console.log(e);
       });
 
       setTimeout(() => {

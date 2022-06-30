@@ -24,6 +24,8 @@ const useLotteryItems = (): Array<LotteryItem> => {
         setWinner(lotteryItem, winnersMap);
         lotteries.set(lotteryID, lotteryItem);        
         setLotteries(lotteries);
+      }).catch(e => {
+        console.log(e);
       });
     });
 

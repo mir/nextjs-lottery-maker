@@ -7,7 +7,7 @@ const useWallet = () => {
     // what MetaMask injects as window.ethereum into each page
 
     const[ signer, setSigner ] = useState<Signer | undefined>(undefined);
-    const[ address, setAddress ] = useState<string>("0x0");
+    const[ address, setAddress ] = useState<string>("");
     const[ provider, setProvider ] = useState<Web3Provider | undefined>(undefined);    
 
     const checkAndSetProvider = () => {
@@ -25,11 +25,16 @@ const useWallet = () => {
             console.log(`Provider exists. Checked.`);
             if (!signer) {
                 console.log(`Setting account`);
-                setSigner(provider.getSigner());
-                provider.getSigner().getAddress().then((address) => {
-                    console.log(`Address is ready: ${address}`);
-                    setAddress(address);
-                });
+                setSigner(provider.getSigner());                
+                provider.getSigner().getAddress()
+                    .then((address) => {
+                        console.log(`Address is ready: ${address}`);
+                        setAddress(address);
+                    })
+                    .catch(e => {
+                        console.log(`Still not connected to the account`);
+                        console.log(e);
+                    })               
             }
         }
     }
