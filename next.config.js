@@ -8,5 +8,6 @@ module.exports = (phase, { defaultConfig }) => {
       // isDev ? true : false,      
       lotteryMakerAddress: "0x1D04d42236E237E855189F6dA4ebf6079553B321",
     },
+    output: 'standalone',
   }
 }
